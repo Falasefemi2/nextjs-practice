@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface LoginResponse {
@@ -12,26 +12,8 @@ export default function LoginPage() {
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
-    const [debug, setDebug] = useState({
-        token: '',
-        cookies: '',
-        localStorage: ''
-    });
 
-    useEffect(() => {
-        const updateDebug = () => {
-            setDebug({
-                token: localStorage.getItem('token') || 'No token found',
-                cookies: document.cookie || 'No cookies found',
-                localStorage: JSON.stringify(localStorage, null, 2)
-            });
-        };
 
-        updateDebug();
-        // Update every 2 seconds
-        const interval = setInterval(updateDebug, 2000);
-        return () => clearInterval(interval);
-    }, []);
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -78,32 +60,6 @@ export default function LoginPage() {
     };
 
     return (
-        // <form onSubmit={handleSubmit} className="space-y-4 p-4">
-        //     <div className="flex flex-col gap-2">
-        //         <input
-        //             name="email"
-        //             type="email"
-        //             placeholder="Email"
-        //             required
-        //             className="p-2 border rounded"
-        //         />
-        //         <input
-        //             name="password"
-        //             type="password"
-        //             placeholder="Password"
-        //             required
-        //             className="p-2 border rounded"
-        //         />
-        //         <button
-        //             type="submit"
-        //             disabled={loading}
-        //             className="p-2 bg-blue-500 text-white rounded disabled:bg-blue-300"
-        //         >
-        //             {loading ? 'Logging in...' : 'Login'}
-        //         </button>
-        //     </div>
-        //     {error && <p className="text-red-500">{error}</p>}
-        // </form>
         <div className="p-4">
             <form onSubmit={handleSubmit} className="space-y-4 mb-8">
                 <div className="flex flex-col gap-2">
@@ -132,30 +88,6 @@ export default function LoginPage() {
                 {error && <p className="text-red-500">{error}</p>}
             </form>
 
-            {/* Debug Information */}
-            <div className="mt-8 p-4 bg-gray-100 rounded">
-                <h2 className="text-lg font-bold mb-4">Debug Information</h2>
-                <div className="space-y-4">
-                    <div>
-                        <h3 className="font-semibold">Token:</h3>
-                        <pre className="bg-white p-2 rounded overflow-auto">
-                            {debug.token}
-                        </pre>
-                    </div>
-                    <div>
-                        <h3 className="font-semibold">Cookies:</h3>
-                        <pre className="bg-white p-2 rounded overflow-auto">
-                            {debug.cookies}
-                        </pre>
-                    </div>
-                    <div>
-                        <h3 className="font-semibold">LocalStorage:</h3>
-                        <pre className="bg-white p-2 rounded overflow-auto">
-                            {debug.localStorage}
-                        </pre>
-                    </div>
-                </div>
-            </div>
         </div>
 
     );
